@@ -1,92 +1,110 @@
+// import java.util.Scanner;
+// public class Main{
+//     public static void main(String args[]){
+//     System.out.println("Welcome to the Number Guessing Game");
+//     System.out.println();
+//     System.out.println("You have to guess a number between 1- 100");
+//     Scanner sc = new Scanner(System.in);
+//     while (true) { 
+        
+
+//         Number obj = new Number();
+//        int guess = obj.num();
+//        int tries = obj.choice();
+//           System.out.println("Enter choice:");
+//           tries = sc.nextInt();
+//     }
+//     }
+// }
+// class Number{
+//     static int num;
+//       static int choice;
+//     // public int guess;
+    
+//     public static int num(){
+//         // System.out.println((int)(1+ Math.random()*101));
+//         return (int)(1+ Math.random()*101);
+//     }
+
+//     public int choice(){
+//         if(choice == num){
+//             System.out.println("You guessed it right!");
+//         }
+//         else if(choice > num){
+//             System.out.println("Too High!!");
+//         }
+//         else if(choice < num ){
+//             System.out.println("Too low!!");
+//         }
+//         else{
+//             System.out.println("Error occured!!!!");
+//         }
+//         return choice;
+//     }
+
+//     // public void setchoice(Number number, int choice){
+//     //      number.choice = choice;
+//     //  }
+//     //  public int getchoice(){
+//     //     return choice;
+//     //  }
+    
+     
+    
+
+// }
 import java.util.Scanner;
 
-public class Main{
-    public static void main(String args[]){
-           
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Welcome to the Number Guessing Game!");
+        System.out.println("You have to guess a number between 1 and 100.");
+
         Scanner sc = new Scanner(System.in);
-        //object bank
-            BankDetails bank = new BankDetails();
-            System.out.println("Enter the name of Acoount holder:");
-            bank.accountHolderName = sc.nextLine(); // taking accountholdername as input  
-           // Take initial balance
-        System.out.println("Enter your account balance:");
-        double balance = sc.nextDouble();
-        sc.nextLine(); // flush the newline
-        bank.setbalance(balance);
-        while(true){
-            System.out.println("Do you wish to Deposit,Withdraw or Exit?");
-            String choice = sc.nextLine();
-            if(choice.equalsIgnoreCase("deposit")){
-                System.out.println("Enter the amount to deposit:");
-                double amount = sc.nextDouble();
-                bank.entering(amount);
+
+        while (true) {
+            NumberGame game = new NumberGame();
+            game.generateNumber(); // generate target number
+            int attempts = 0;
+            boolean guessedCorrectly = false;
+
+            while (!guessedCorrectly) {
+                System.out.print("Enter your guess: ");
+                int userGuess = sc.nextInt();
+                attempts++;
+
+                guessedCorrectly = game.checkGuess(userGuess);
             }
-            else if (choice.equalsIgnoreCase("withdraw")) {
-                System.out.println("Enter the amount to withdraw:");
-                double amount = sc.nextDouble();
-                bank.exiting(amount);
-            }else if (choice.equalsIgnoreCase("exit")) {
-                System.out.println("Thank you for banking with us!");
+
+            System.out.println("You guessed it in " + attempts + " tries!");
+
+            System.out.print("Do you want to play again? (yes/no): ");
+            String again = sc.next();
+            if (!again.equalsIgnoreCase("yes")) {
+                System.out.println("Thanks for playing!");
                 break;
-            
             }
-
-            else{
-                System.out.println("Invalid command!");
-            }
-            System.out.println("\nCurrent Balance: $" + bank.getBalance());
         }
-          
-        // Print final status
-        System.out.println("\n--- Final Account Summary ---");
-        System.out.println("Account Holder: " + bank.getaccountHolderName());
-        System.out.println("Current Balance: $" + bank.getBalance());
 
-        sc.close();  
-          
-
+        sc.close();
     }
 }
- class BankDetails{
-    public String accountHolderName;
-    private double balance;
-    // private double getBalance;
-    // public double deposit;
-    // public double withdraw;
-     
+class NumberGame {
+    private int target;
 
-    //Depositing amount in account
-    public void entering(double amount){
-        if(amount>0){
-            balance += amount;
-            System.out.println("Deposit Successful...");
-        }
-        else{
-            System.out.println("Error,Deposit caannot be less than 0.");
-        }
+    public void generateNumber() {
+        target = (int)(1 + Math.random() * 100);
     }
-    public String getaccountHolderName() {
-        return accountHolderName;
-    }
-     public void setAccountHolderName(String name) {
-        this.accountHolderName = name;
-    }
-    // Withdrawing amount from the account
-    public void exiting(double amount){
-        if(amount>0 && amount <= balance){
-            balance -= amount;
-            System.out.println("Withdraw Succesful...");
-        }
-        else{
-            System.out.println("Error,cannot withdrawn!");
-        }
-    }
- // getters and setters for balance
-   public void setbalance(double balance){
-    this.balance = balance;
-   }
-   public double getBalance(){
-      return this.balance;
-   }
 
+    public boolean checkGuess(int guess) {
+        if (guess == target) {
+            System.out.println("You guessed it right!");
+            return true;
+        } else if (guess > target) {
+            System.out.println("Too high!");
+        } else {
+            System.out.println("Too low!");
+        }
+        return false;
+    }
 }
